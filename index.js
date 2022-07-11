@@ -73,13 +73,29 @@ async function run() {
     });
 
     // delete
-    app.delete('/student/:id', async (req, res) => {
-        const id = req.params.id;
-        const query = { _id: ObjectId(id) };
-        const result = await studentCollection.deleteOne(query);
-        res.send(result);
+    app.delete("/student/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await studentCollection.deleteOne(query);
+      res.send(result);
     });
-    
+    // patch student
+    app.post("/students/query", async (req, res) => {
+      const query = req.body;
+      const originalQuery = {};
+
+      try {
+        for (let key in query) {
+          if (!!query[key] && query[key] !== "select")
+            originalQuery[key] = query[key];
+        }
+        let result = studentCollection.find(originalQuery);
+        result = await result.toArray()
+        res.send(result)
+      } catch (error) {
+        res.send(error);
+      }
+    });
   } finally {
   }
 }
