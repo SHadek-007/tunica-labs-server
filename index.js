@@ -25,7 +25,6 @@ async function run() {
     app.post("/students", async (req, res) => {
       try {
         const newStudent = req.body;
-        console.log(newStudent);
         const result = await studentCollection.insertOne(newStudent);
         res.send(result);
       } catch (error) {
@@ -49,7 +48,6 @@ async function run() {
     app.get("/student/:id", async (req, res) => {
       try {
         const id = req.params.id;
-        console.log(id);
         const query = { _id: ObjectId(id) };
         const student = await studentCollection.findOne(query);
         res.send(student);
